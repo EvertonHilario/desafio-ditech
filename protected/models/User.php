@@ -32,7 +32,7 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_name, user_password, user_email', 'required'),
+			array('user_name, user_password, user_email, permission', 'required'),
 			array('permission', 'numerical', 'integerOnly'=>true),
 			array('user_name, user_email', 'length', 'max'=>255),
 			array('user_password', 'length', 'max'=>100),
@@ -61,12 +61,12 @@ class User extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'user_id' => 'User',
-			'user_name' => 'User Name',
-			'user_password' => 'User Password',
-			'user_email' => 'User Email',
-			'permission' => 'Permission',
-			'date_create' => 'Date Create',
+			'user_id' => 'Ref.',
+			'user_name' => 'Nome',
+			'user_password' => 'Password',
+			'user_email' => 'E-mail',
+			'permission' => 'Permissão',
+			'date_create' => 'Data de criação',
 		);
 	}
 

@@ -64,7 +64,7 @@ class UserController extends Controller
 		{
 			$model->attributes=$_POST['User'];
 			if($model->save())
-				$this->redirect(array('admin','id'=>$model->user_id));
+				$this->redirect(array('update','id'=>$model->user_id));
 		}
 
 		$this->render('create',array(
@@ -83,10 +83,14 @@ class UserController extends Controller
 
 		if(isset($_POST['User']))
 		{
+			
 			$model->attributes=$_POST['User'];
 			if($model->save())
-				$this->redirect(array('admin','id'=>$model->user_id));
+				$this->redirect(array('update','id'=>$model->user_id));
 		}
+
+		// $model->user_password = '';
+
 
 		$this->render('update',array(
 			'model'=>$model,
@@ -111,7 +115,7 @@ class UserController extends Controller
 	/**
 	 * Administrador dos usuários, renderiza a grid
 	 */
-	public function actionAdmin()
+	public function actionIndex()
 	{
 		$model=new User('search');
 		$model->unsetAttributes(); 

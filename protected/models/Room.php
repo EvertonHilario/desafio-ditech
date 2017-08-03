@@ -29,6 +29,7 @@ class Room extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			array('room_name', 'required'),
 			array('room_number', 'length', 'max'=>10),
 			array('room_name', 'length', 'max'=>100),
 			// The following rule is used by search().
@@ -55,9 +56,9 @@ class Room extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'room_id' => 'Room',
-			'room_number' => 'Room Number',
-			'room_name' => 'Room Name',
+			'room_id' => 'Ref.',
+			'room_number' => 'Número da Sala',
+			'room_name' => 'Nome da Sala',
 		);
 	}
 

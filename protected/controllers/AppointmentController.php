@@ -98,14 +98,14 @@ class AppointmentController extends Controller
 	/**
 	 * Tela para a busca do melhor horário para reserva
 	 */
-	public function actionSearchHour()
+	public function actionIndex()
 	{
 		$model=new Appointment('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Appointment']))
 			$model->attributes=$_GET['Appointment'];
 
-		$this->render('admin',array(
+		$this->render('index',array(
 			'model'=>$model,
 		));
 	}

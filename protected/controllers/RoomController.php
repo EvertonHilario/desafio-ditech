@@ -67,7 +67,7 @@ class RoomController extends Controller
 		{
 			$model->attributes=$_POST['Room'];
 			if($model->save())
-				$this->redirect(array('admin','id'=>$model->room_id));
+				$this->redirect(array('update','id'=>$model->room_id));
 		}
 
 		$this->render('create',array(
@@ -88,7 +88,7 @@ class RoomController extends Controller
 		{
 			$model->attributes=$_POST['Room'];
 			if($model->save())
-				$this->redirect(array('admin','id'=>$model->room_id));
+				$this->redirect(array('update','id'=>$model->room_id));
 		}
 
 		$this->render('update',array(
@@ -113,7 +113,7 @@ class RoomController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionAdmin()
+	public function actionIndex()
 	{
 		$model=new Room('search');
 		$model->unsetAttributes();  // clear any default values

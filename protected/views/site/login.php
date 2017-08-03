@@ -1,53 +1,91 @@
-<?php
-/* @var $this SiteController */
-/* @var $model LoginForm */
-/* @var $form CActiveForm  */
+<nav class="navbar navbar-transparent navbar-absolute">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<div class="navbar-brand">
+				
+				<?php
 
-$this->pageTitle=Yii::app()->name . ' - Login';
-$this->breadcrumbs=array(
-	'Login',
-);
-?>
+				    $this->widget(
+				        'booster.widgets.TbBreadcrumbs',
+						    array(
+					        'homeLink' => 'Acesso ao sistema',
+					        'links' => array('')
+					    )
 
-<h1>Login</h1>
+				    );
+				?>
 
-<p>Please fill out the following form with your login credentials:</p>
+			</div>
 
-<div class="form">
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'login-form',
-	'enableClientValidation'=>true,
-	'clientOptions'=>array(
-		'validateOnSubmit'=>true,
-	),
-)); ?>
+		</div>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'username'); ?>
-		<?php echo $form->textField($model,'username'); ?>
-		<?php echo $form->error($model,'username'); ?>
 	</div>
+</nav>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'password'); ?>
-		<?php echo $form->passwordField($model,'password'); ?>
-		<?php echo $form->error($model,'password'); ?>
-		<p class="hint">
-			Hint: You may login with <kbd>demo</kbd>/<kbd>demo</kbd> or <kbd>admin</kbd>/<kbd>admin</kbd>.
-		</p>
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-3">
+
+				<?php $form=$this->beginWidget('CActiveForm', array(
+					'id'=>'login-form',
+					'enableClientValidation'=>true,
+					'clientOptions'=>array(
+						'validateOnSubmit'=>true,
+					),
+				)); ?>
+
+					<div class="card">
+					    <div class="card-header" data-background-color="purple">
+					        <h4 class="title">Formulário de Acesso</h4>
+							<p class="category">preencha seu e-mail e senha para acesar o sistema de reserva de salas.</p>
+					    </div>
+					    <div class="card-content">
+
+					    	<?php echo $form->errorSummary($model); ?>
+
+				            <div class="row">
+
+				                <div class="col-md-12">
+									<div class="form-group label-floating">
+										<label class="control-label">Nº</label>
+											<?php echo $form->textField($model,'username',array('class'=>'form-control')); ?>
+									</div>
+				                </div>
+				                <div class="col-md-12">
+									<div class="form-group label-floating">
+										<label class="control-label">* Nome da sala</label>
+
+										<?php echo $form->passwordField($model,'password',array('class'=>'form-control')); ?>
+
+									</div>
+				                </div>
+				                <div class="col-md-4">
+
+				                </div>
+				                <div class="col-md-3">
+									
+				                </div>
+
+				            </div>
+				            <center>
+				            	<?php echo CHtml::submitButton('Entrar',array('class'=>'btn btn-primary ')); ?>
+				            </center>
+
+				            <div class="clearfix"></div>
+					    </div>
+					</div>
+
+				<?php $this->endWidget(); ?>
+
+			</div>
+		</div>
+						
 	</div>
-
-	<div class="row rememberMe">
-		<?php echo $form->checkBox($model,'rememberMe'); ?>
-		<?php echo $form->label($model,'rememberMe'); ?>
-		<?php echo $form->error($model,'rememberMe'); ?>
-	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Login'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-</div><!-- form -->
+</div>

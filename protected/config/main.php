@@ -7,8 +7,11 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
-
+	'name'=>'Salas de Reuniões',
+	'sourceLanguage'=>'pt_br',
+	'language'=>'pt_br', 
+ 	'timeZone' => 'America/Sao_Paulo',
+ 	'defaultController'=>'dashboard',
 
 	// preloading 'log' component
 	'preload'=>array('log','booster'),
