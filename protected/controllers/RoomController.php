@@ -1,4 +1,11 @@
 <?php
+/** 
+* Esta classe é responsável por administrar as salas
+*
+* @author Éverton Hilario <evertonjuru@gmail.com>
+* @version 0.1 
+* @access public  
+*/ 
 
 class RoomController extends Controller
 {
@@ -46,19 +53,8 @@ class RoomController extends Controller
 	}
 
 	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
-
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * action que renderiza a index
+	 * se a criação for um sucesso redireciona para o admin
 	 */
 	public function actionCreate()
 	{
@@ -71,7 +67,7 @@ class RoomController extends Controller
 		{
 			$model->attributes=$_POST['Room'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->room_id));
+				$this->redirect(array('admin','id'=>$model->room_id));
 		}
 
 		$this->render('create',array(
@@ -80,22 +76,19 @@ class RoomController extends Controller
 	}
 
 	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
+	 * action que realiza a edição das salas
+	 * se a edição for um sucesso redireciona para o admin
+	 * @param integer $id identificador da sala
 	 */
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['Room']))
 		{
 			$model->attributes=$_POST['Room'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->room_id));
+				$this->redirect(array('admin','id'=>$model->room_id));
 		}
 
 		$this->render('update',array(
@@ -104,9 +97,9 @@ class RoomController extends Controller
 	}
 
 	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
+	 * Deleta uma sala específico
+	 * se a exclusão for um sucesso atualiza a grid
+	 * @param integer $id identificador da sala
 	 */
 	public function actionDelete($id)
 	{
@@ -115,17 +108,6 @@ class RoomController extends Controller
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-	}
-
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Room');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
 	}
 
 	/**

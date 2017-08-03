@@ -42,7 +42,7 @@ return array(
 		),
 
 		// uncomment the following to enable URLs in path-format
-		/*
+		
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'rules'=>array(
@@ -51,7 +51,7 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
-		*/
+		
 		'booster' => array(
 		    'class' => 'application.extensions.booster.components.Booster',
 		),

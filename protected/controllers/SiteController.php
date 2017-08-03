@@ -1,4 +1,11 @@
 <?php
+/** 
+* Esta classe é responsável gerenciar os acessos e manutenção de perfil
+*
+* @author Éverton Hilario <evertonjuru@gmail.com>
+* @version 0.1 
+* @access public  
+*/ 
 
 class SiteController extends Controller
 {
@@ -22,8 +29,7 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
+	 * action que renderiza a index
 	 */
 	public function actionIndex()
 	{
@@ -33,7 +39,7 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * This is the action to handle external exceptions.
+	 * action que renderiza o error
 	 */
 	public function actionError()
 	{
@@ -47,33 +53,17 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * Displays the contact page
+	 * action que renderiza a profile
 	 */
-	public function actionContact()
+	public function actionProfile()
 	{
-		$model=new ContactForm;
-		if(isset($_POST['ContactForm']))
-		{
-			$model->attributes=$_POST['ContactForm'];
-			if($model->validate())
-			{
-				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
-				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
-				$headers="From: $name <{$model->email}>\r\n".
-					"Reply-To: {$model->email}\r\n".
-					"MIME-Version: 1.0\r\n".
-					"Content-Type: text/plain; charset=UTF-8";
 
-				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
-				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
-				$this->refresh();
-			}
-		}
-		$this->render('contact',array('model'=>$model));
+		die('ok');
+
 	}
 
 	/**
-	 * Displays the login page
+	 * action que renderiza login
 	 */
 	public function actionLogin()
 	{
@@ -99,7 +89,7 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * Logs out the current user and redirect to homepage.
+	 * action que desfaz a sessão e redireciona para home
 	 */
 	public function actionLogout()
 	{

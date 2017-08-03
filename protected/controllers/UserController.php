@@ -1,5 +1,11 @@
 <?php
-
+/** 
+* Esta classe é responsável por administrar os usuários
+*
+* @author Éverton Hilario <evertonjuru@gmail.com>
+* @version 0.1 
+* @access public  
+*/ 
 class UserController extends Controller
 {
 	/**
@@ -45,33 +51,20 @@ class UserController extends Controller
 		);
 	}
 
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
 
 	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * action que renderiza a index
+	 * se a criação for um sucesso redireciona para o admin
 	 */
 	public function actionCreate()
 	{
 		$model=new User;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->user_id));
+				$this->redirect(array('admin','id'=>$model->user_id));
 		}
 
 		$this->render('create',array(
@@ -80,22 +73,19 @@ class UserController extends Controller
 	}
 
 	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
+	 * action que realiza a edição do usuário
+	 * se a edição for um sucesso redireciona para o admin
+	 * @param integer $id identificador do usuário
 	 */
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->user_id));
+				$this->redirect(array('admin','id'=>$model->user_id));
 		}
 
 		$this->render('update',array(
@@ -104,37 +94,27 @@ class UserController extends Controller
 	}
 
 	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
+	 * Deleta um usuário específico
+	 * se a exclusão for um sucesso atualiza a grid
+	 * @param integer $id identificador do usuário
 	 */
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		// if for uma requisição ajax
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('User');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
 
 	/**
-	 * Manages all models.
+	 * Administrador dos usuários, renderiza a grid
 	 */
 	public function actionAdmin()
 	{
 		$model=new User('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes(); 
 		if(isset($_GET['User']))
 			$model->attributes=$_GET['User'];
 
