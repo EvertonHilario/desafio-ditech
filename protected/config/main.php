@@ -9,8 +9,10 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'My Web Application',
 
+
 	// preloading 'log' component
-	'preload'=>array('log'),
+	'preload'=>array('log','booster'),
+	
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -28,6 +30,7 @@ return array(
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
 		*/
+
 	),
 
 	// application components
@@ -49,6 +52,9 @@ return array(
 			),
 		),
 		*/
+		'booster' => array(
+		    'class' => 'application.extensions.booster.components.Booster',
+		),
 
 		// database settings are configured in database.php
 		'db'=>require(dirname(__FILE__).'/database.php'),
