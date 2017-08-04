@@ -55,6 +55,9 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
+
+			$model->user_password = $this->hashGeneration($model->user_password);
+
 			if($model->save())
 				$this->redirect(array('update','id'=>$model->user_id));
 		}
@@ -62,6 +65,13 @@ class UserController extends Controller
 		$this->render('create',array(
 			'model'=>$model,
 		));
+	}
+
+	private function hashGeneration($password)
+	{
+
+		return password_hash($password, PASSWORD_DEFAULT);
+
 	}
 
 	/**
@@ -76,13 +86,28 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			
+			if($_POST['User']['user_password'] != '')
+			{
+
+				$_POST['User']['user_password'] = $this->hashGeneration($_POST['User']['user_password']);
+
+			}
+			else
+			{
+
+				$_POST['User']['user_password'] = $model->user_password;
+				
+			}
+
+
 			$model->attributes=$_POST['User'];
+			
+
 			if($model->save())
 				$this->redirect(array('update','id'=>$model->user_id));
 		}
 
-		// $model->user_password = '';
-
+		$model->user_password = '';
 
 		$this->render('update',array(
 			'model'=>$model,

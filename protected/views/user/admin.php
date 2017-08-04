@@ -56,12 +56,12 @@
 						// 'user_password',
 						'user_email',
 						// 'permission',
-						// array(
-						// 	'header' 		=> Yii::t('ses', 'Ações'),
-						// 	'class'			=> 'booster.widgets.TbButtonColumn',
-						// 	'template'		=> '{update} {delete}',
+						array(
+							'header' 		=> Yii::t('ses', 'Ações'),
+							'class'			=> 'booster.widgets.TbButtonColumn',
+							'template'		=> '{update} {delete}',
 		
-						// ),
+						),
 					);
 
 				    $this->widget(
