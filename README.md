@@ -3,10 +3,10 @@ Desafio Ditech - sistema de fila virtual para uso de salas de reuniões
 
 INSTALAÇÃO
 
-1. Clonar o projeto 
+1. Clonar o projeto
   $ git clone https://github.com/EvertonHilario/desafio-ditech.git
   
-2. Criar a base de dados 
+2. Criar a base de dados
   dump/init.sql
   
 3. Configura a conexão com a base de dados
