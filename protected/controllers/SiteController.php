@@ -53,16 +53,6 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * action que renderiza a profile
-	 */
-	public function actionProfile()
-	{
-
-		die('ok');
-
-	}
-
-	/**
 	 * action que renderiza login
 	 */
 	public function actionLogin()

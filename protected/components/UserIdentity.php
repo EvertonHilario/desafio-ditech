@@ -1,33 +1,77 @@
 <?php
 
-/**
- * UserIdentity represents the data needed to identity a user.
- * It contains the authentication method that checks if the provided
- * data can identity the user.
- */
+/** 
+* Esta classe é responsável por validar o usuário para acessar o sistema
+*
+* @author Éverton Hilario <evertonjuru@gmail.com>
+* @version 0.1 
+* @access public  
+*/ 
 class UserIdentity extends CUserIdentity
 {
-	/**
-	 * Authenticates a user.
-	 * The example implementation makes sure if the username and password
-	 * are both 'demo'.
-	 * In practical applications, this should be changed to authenticate
-	 * against some persistent user identity storage (e.g. database).
-	 * @return boolean whether authentication succeeds.
-	 */
+
+
 	public function authenticate()
 	{
-		$users=array(
-			// username => password
-			'demo'=>'demo',
-			'admin'=>'admin',
-		);
-		if(!isset($users[$this->username]))
-			$this->errorCode=self::ERROR_USERNAME_INVALID;
-		elseif($users[$this->username]!==$this->password)
-			$this->errorCode=self::ERROR_PASSWORD_INVALID;
+
+		if(!empty($this->username))
+		{
+
+
+			$user = $this->getUser();
+
+			if(!isset($user->user_name))
+			{
+
+				$this->errorCode=self::ERROR_USERNAME_INVALID;
+
+			}
+			elseif(!password_verify($this->password, $user->user_password))
+			{
+
+				$this->errorCode=self::ERROR_PASSWORD_INVALID;
+
+			}
+			else
+			{
+			
+				$this->sessionStart($user);	
+
+				$this->errorCode=self::ERROR_NONE;	
+			}
+
+		}
 		else
-			$this->errorCode=self::ERROR_NONE;
+		{
+
+			$this->errorCode=self::ERROR_USERNAME_INVALID;
+
+		}
+		
+						
 		return !$this->errorCode;
 	}
+
+	private function getUser()
+	{
+
+		return User::model()->find('user_email = "'.$this->username.'"');
+		
+	}
+
+	private function sessionStart($user)
+	{
+
+		@session_start(md5(time()));
+
+		$this->setPersistentStates($_SESSION);
+
+		//dados do usuaio
+	 	$this->setState('id', $user->user_id);		
+	 	$this->setState('user_name', $user->user_name);		
+	 	$this->setState('user_email', $user->user_email);		
+	 	$this->setState('permission', $user->permission);		
+
+	}
+
 }
