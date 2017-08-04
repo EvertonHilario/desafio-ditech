@@ -50,13 +50,16 @@
 
 
 				<?php $this->renderPartial('_formSearch', array('model'=>$model)); ?>
+				<div id="result-search">
 
-				<?php $this->renderPartial('_grid', array('model'=>$model)); ?>
+				</div>
+				<?php //$this->renderPartial('_grid', array('model'=>$model)); ?>
 
-				<?php $this->renderPartial('_formReserve', array('model'=>$model)); ?>
+				<?php //$this->renderPartial('_formReserve', array('model'=>$model)); ?>
 
 
             </div>
         </div>
 	</div>
 </div>
+

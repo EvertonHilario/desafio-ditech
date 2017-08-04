@@ -36,7 +36,7 @@ class AppointmentController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index'),
+				'actions'=>array('index', 'search'),
 				'users'=>array('@'),
 			),
 			
@@ -89,11 +89,15 @@ class AppointmentController extends Controller
 	}
 
 
+
+			// 'reservationPeriod'=>$this->reservationPeriod,
+
 	/**
 	 * Tela para a busca do melhor horário para reserva
 	 */
 	public function actionIndex()
 	{
+
 		$model=new Appointment('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Appointment']))
@@ -104,6 +108,48 @@ class AppointmentController extends Controller
 		));
 	}
 
+
+	// variável que recebe o período que poode ser resevada a sala
+	public $reservationPeriod = array(
+		'startTime'=>8,
+		'endTime'=>18
+	);
+
+	/**
+	 * Tela para a busca do melhor horário para reserva
+	 */
+	public function actionSearch()
+	{
+
+
+		$model = Appointment::model()->findAll(array("condition"=>"appointment_start =  '2017-08-29 09:00:00' and room_room_id = '1' "));
+
+		if(empty($_POST['room_room_id']) || empty($_POST['appointment_start']))
+		{
+
+			$html ='Nenhum registro para esta pesquisa';
+
+		}
+		else
+		{
+			$html =	$this->renderPartial(
+				'_grid',
+				array(
+					'reservationPeriod'	=>$this->reservationPeriod,
+					'model'	=>$model,
+				),
+				true
+			);
+
+		}
+
+		echo json_encode(
+			array(
+				'html'	=> $html
+			)
+		);
+
+	}
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

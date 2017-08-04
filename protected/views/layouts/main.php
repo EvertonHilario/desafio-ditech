@@ -38,8 +38,6 @@
 	<!-- <script src="../assets/js/bootstrap.min.js" type="text/javascript"></script> -->
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/material-dashboard-html/assets/js/material.min.js" type="text/javascript"></script>
 
-	<!--  Charts Plugin -->
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/material-dashboard-html/assets/js/chartist.min.js"></script>
 
 	<!--  Notifications Plugin    -->
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/material-dashboard-html/assets/js/bootstrap-notify.js"></script>
@@ -53,13 +51,6 @@
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/material-dashboard-html/assets/js/demo.js"></script>
 
-	<script type="text/javascript">
-    	$(document).ready(function(){
 
-			// Javascript method's body can be found in assets/js/demos.js
-        	demo.initDashboardPageCharts();
-
-    	});
-	</script>
 
 </html>
