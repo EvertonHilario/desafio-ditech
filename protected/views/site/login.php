@@ -54,13 +54,13 @@
 
 				                <div class="col-md-12">
 									<div class="form-group label-floating">
-										<label class="control-label">Nº</label>
+										<label class="control-label">* E-mail</label>
 											<?php echo $form->textField($model,'username',array('class'=>'form-control')); ?>
 									</div>
 				                </div>
 				                <div class="col-md-12">
 									<div class="form-group label-floating">
-										<label class="control-label">* Nome da sala</label>
+										<label class="control-label">* Senha</label>
 
 										<?php echo $form->passwordField($model,'password',array('class'=>'form-control')); ?>
 

@@ -56,12 +56,12 @@
 						'room_id',
 						'room_number',
 						'room_name',
-						// array(
-						// 	'header' 		=> Yii::t('ses', 'Ações'),
-						// 	'class'			=> 'booster.widgets.TbButtonColumn',
-						// 	'template'		=> '{update} {delete}',
+						array(
+							'header' 		=> Yii::t('ses', 'Ações'),
+							'class'			=> 'booster.widgets.TbButtonColumn',
+							'template'		=> '{update} {delete}',
 		
-						// ),
+						),
 					);
 
 				    $this->widget(
