@@ -3,10 +3,6 @@
 		margin: -10px -10px -10px 0;
 	}
 </style>
-<?php
-var_dump($model);
-
-?>
 <div class="row">
 	<div class="col-sm-6">
 		<h4>Turno Manhã</h4>
@@ -17,14 +13,16 @@ var_dump($model);
 		    </thead>
 		    <tbody>
 
-		    	<?php for ($i = $reservationPeriod['startTime']; $i <= 12; $i++) { ?>
+		    	<?php for ($hour = Yii::app()->params['reservationPeriod']['start_time_of_shift_one']; $hour <= Yii::app()->params['reservationPeriod']['end_time_of_shift_one']; $hour++) { ?>
 			        <tr>
-			        	<td><?php echo $i; ?>:00</td>
-			        	<td><button type="button" class="btn btn-primary btn-xs" style="">Reservar</button></td>
+			        	<td><?php echo $hour; ?>:00</td>
+			        	<td>
+
+			        		<?php $this->renderPartial('grid/actionOrState',array('hour' => $hour)); ?>
+
+			        	</td>
 			        </tr>
 		    	<?php } ?>
-
-
 
 		    </tbody>
 		</table>
@@ -39,10 +37,14 @@ var_dump($model);
 		    </thead>
 		    <tbody>
 
-		    	<?php for ($i = 13; $i <= $reservationPeriod['endTime']; $i++) { ?>
+		    	<?php for ($hour = Yii::app()->params['reservationPeriod']['start_time_of_shift_two']; $hour <= Yii::app()->params['reservationPeriod']['end_time_of_shift_two']; $hour++) { ?>
 			        <tr>
-			        	<td><?php echo $i; ?>:00</td>
-			        	<td><button type="button" class="btn btn-primary btn-xs" style="">Reservar</button></td>
+			        	<td><?php echo $hour; ?>:00</td>
+			        	<td>
+
+			        		<?php $this->renderPartial('grid/actionOrState',array('hour' => $hour)); ?>
+
+			        	</td>
 			        </tr>
 		    	<?php } ?>
 

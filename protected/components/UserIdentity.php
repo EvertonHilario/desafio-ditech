@@ -10,13 +10,11 @@
 class UserIdentity extends CUserIdentity
 {
 
-
 	public function authenticate()
 	{
 
 		if(!empty($this->username))
 		{
-
 
 			$user = $this->getUser();
 
@@ -55,7 +53,14 @@ class UserIdentity extends CUserIdentity
 	private function getUser()
 	{
 
-		return User::model()->find('user_email = "'.$this->username.'"');
+		return User::model()->find(
+			array(
+                "condition" => "user_email = :user_email",
+                "params"    => array(
+                	":user_email" 	=> $this->username
+                )
+			)
+		);
 		
 	}
 
@@ -67,7 +72,7 @@ class UserIdentity extends CUserIdentity
 		$this->setPersistentStates($_SESSION);
 
 		//dados do usuaio
-	 	$this->setState('id', $user->user_id);		
+	 	$this->setState('user_id', $user->user_id);		
 	 	$this->setState('user_name', $user->user_name);		
 	 	$this->setState('user_email', $user->user_email);		
 	 	$this->setState('permission', $user->permission);		

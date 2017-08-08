@@ -1,6 +1,7 @@
 <?php
 /** 
-* Esta classe é responsável buscar o melhor horário e reserva de salas
+* Esta classe é responsável disponibilizar uma busca onde o 
+* usuário posa encontrar o melhor horário para poder reservar a sala
 *
 * @author Éverton Hilario <evertonjuru@gmail.com>
 * @version 0.1 
@@ -9,11 +10,6 @@
 
 class AppointmentController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -36,7 +32,7 @@ class AppointmentController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index', 'search'),
+				'actions'=>array('index', 'search','renderReservationPage'),
 				'users'=>array('@'),
 			),
 			
@@ -46,12 +42,201 @@ class AppointmentController extends Controller
 		);
 	}
 
-	/**
-	 * action que renderiza a modal
-	 */
-	public function actionModal()
+	//variável que recebe o array de horas ocupadas
+	public $checkAvailabilityOnTheDay 		= array();
+
+	//variável que recebe o array de horas ocupadas pelo usuário logado
+	public $checkUserAvailabilityInSession 	= array();
+
+	//variável que recebe a estrutura html das views
+	public $html = 'Não foi possível renderizar a tela, recarregue a página';
+
+
+  	/** 
+    * Tela para a busca do melhor horário para reserva de salas
+    * @access public 
+    * @return html     
+    */ 
+	public function actionIndex()
 	{
-		die('teste');
+		// renderiza a index com o formulário de busca pelo melhor horário para reservar a sala
+		$this->render('index');
+	}
+
+
+  	/** 
+    * Action que renderiza o resultado da busca
+    * @access public 
+    * @param POST
+    * @return void     
+    */ 
+	public function actionSearch()
+	{
+
+		try 
+		{
+
+			//método que valida os dados vindo do formulário de busca
+			$this->postValidator($_POST);
+
+		    // seta variável que recebe o dia da pesquisa
+		    // converte data para formato iso
+   			$appointment_start 	= date('Y-m-d', CDateTimeParser::parse($_POST['appointment_start'], Yii::app()->locale->dateFormat));
+
+   			//variável que recebe o id da sala
+   			$room_room_id 		= $_POST['room_room_id'];
+
+   			// método que verifica disponibilidade de horários
+			$this->checkAvailabilityOnTheDay($appointment_start, $room_room_id);
+
+   			// método que verifica disponibilidade de horários do usuário logado
+			$this->checkUserAvailabilityInSession($appointment_start);
+
+			// monta o html com o resultado da busca
+			$this->html = $this->renderPartial('_grid',	null, true);
+
+			if(empty($this->html)) throw new Exception('Erro ao gravar o html. Recarregue a página!');
+
+			//retorna json com resultado da busca
+		    $this->jsonStructureOfTheClass();
+
+
+		}
+		catch (Exception $e) 
+		{
+			$this->html = '<div class="alert alert-success" role="alert">'.$e->getMessage().'</div>';
+			// imprime json com mensagem do sistema
+		    $this->jsonStructureOfTheClass();
+
+		}
+
+	}
+
+  	/** 
+    * método que busca as reservas do suário que está logado (verifica disponibilidade do usuário na sessao)
+    * @access private 
+    * @param date $appointment_start
+    * @param Int $user_id
+    * @return void     
+    */ 
+	private function  checkUserAvailabilityInSession($appointment_start)
+	{
+
+		//realiza a busca na base de dados 
+		$model =  Appointment::model()->findAll(
+       		array(
+                "condition" => "DATE(appointment_start) = :appointment_start and user_user_id = :user_user_id",
+                "params"    => array(":appointment_start" => $appointment_start,":user_user_id" => Yii::app()->user->user_id)
+			)
+		);
+
+		//se encontrou algum horário ocupado
+		if(!empty($model))
+		{
+			//percorre a model de reservas
+			foreach ($model as $key => $value) 
+			{
+				//adiciona os horários ocupados no array
+				$this->checkUserAvailabilityInSession[] = strftime( '%H', strtotime($value->appointment_start));
+
+			}
+		}
+
+	}
+
+  	/** 
+    * método que busca as reservas de uma determinada sala e data (verifica disponibilidade no dia)
+    * @access private 
+    * @param date $appointment_start
+    * @param Int $room_room_id
+    * @return void     
+    */ 
+	private function  checkAvailabilityOnTheDay($appointment_start, $room_room_id)
+	{
+
+		//realiza a busca na base de dados 
+		$model =  Appointment::model()->findAll(
+
+       		array(
+                "condition" => "DATE(appointment_start) = :appointment_start and room_room_id = :room_room_id",
+                "params"    => array(
+                	":appointment_start" 	=> $appointment_start,
+                	":room_room_id" 		=> $room_room_id
+                )
+			)
+
+		);
+
+		//se encontrou algum horário ocupado
+		if(!empty($model))
+		{
+			//percorre a model de reservas
+			foreach ($model as $key => $value) 
+			{
+				//adiciona os horários ocupados no array
+				$this->checkAvailabilityOnTheDay[] = strftime( '%H', strtotime($value->appointment_start));
+
+			}
+		}
+
+	}
+
+  	/** 
+    * método que valida o post vindo do formulário de busca de horários 
+    * @access private 
+    * @param post $post
+    * @return void     
+    */ 
+	private function postValidator($post)
+	{
+
+		// verifica se foi passado parâmetros
+		if(empty($_POST['room_room_id']) && empty($_POST['appointment_start'])) throw new Exception('Selecione uma sala e a data que você deseja reservar');
+
+		// verifica se foi selecionada a sala
+		if (empty($_POST['room_room_id'])) throw new Exception('Selecione uma sala');
+
+		// verifica se foi selecionada a data
+		if (empty($_POST['appointment_start'])) throw new Exception('Selecione uma data');
+
+	}
+
+  	/** 
+    * método que retorna estrutura json comum dentro do contexto desta class 
+    * @access private 
+    * @return msg     
+    */ 
+	private function jsonStructureOfTheClass()
+	{
+
+		// retorna json
+		echo json_encode(
+	    	array(
+	    		'html'	=> $this->html
+    		)
+    	);
+
+	}
+
+  	/** 
+    * Action que renderiza a tela de reserva de sala
+    * @access public 
+    * @return html     
+    */ 
+	public function actionRenderReservationPage($hour)
+	{
+
+			$model=new Appointment;
+
+			$html =	$this->renderPartial(
+				'_formReserve',
+				array(
+					'model' => $model,
+				),
+				true
+			);
+
+			echo $html;
 	}
 
 	/**
@@ -90,66 +275,6 @@ class AppointmentController extends Controller
 
 
 
-			// 'reservationPeriod'=>$this->reservationPeriod,
-
-	/**
-	 * Tela para a busca do melhor horário para reserva
-	 */
-	public function actionIndex()
-	{
-
-		$model=new Appointment('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Appointment']))
-			$model->attributes=$_GET['Appointment'];
-
-		$this->render('index',array(
-			'model'=>$model,
-		));
-	}
-
-
-	// variável que recebe o período que poode ser resevada a sala
-	public $reservationPeriod = array(
-		'startTime'=>8,
-		'endTime'=>18
-	);
-
-	/**
-	 * Tela para a busca do melhor horário para reserva
-	 */
-	public function actionSearch()
-	{
-
-
-		$model = Appointment::model()->findAll(array("condition"=>"appointment_start =  '2017-08-29 09:00:00' and room_room_id = '1' "));
-
-		if(empty($_POST['room_room_id']) || empty($_POST['appointment_start']))
-		{
-
-			$html ='Nenhum registro para esta pesquisa';
-
-		}
-		else
-		{
-			$html =	$this->renderPartial(
-				'_grid',
-				array(
-					'reservationPeriod'	=>$this->reservationPeriod,
-					'model'	=>$model,
-				),
-				true
-			);
-
-		}
-
-		echo json_encode(
-			array(
-				'html'	=> $html
-			)
-		);
-
-	}
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

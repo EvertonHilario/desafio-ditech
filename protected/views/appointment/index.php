@@ -48,18 +48,19 @@
 
             <div class="card-content table-responsive">
 
+                <!-- start formulário de busca -->
+				<?php $this->renderPartial('_formSearch'); ?>
+                <!-- end formulário de busca -->
 
-				<?php $this->renderPartial('_formSearch', array('model'=>$model)); ?>
+                <!-- start resutado da busca -->
 				<div id="result-search">
 
 				</div>
-				<?php //$this->renderPartial('_grid', array('model'=>$model)); ?>
-
-				<?php //$this->renderPartial('_formReserve', array('model'=>$model)); ?>
+                <!-- end resultado da busca -->
 
 
             </div>
         </div>
 	</div>
 </div>
-
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/themes/js/appointment.js"); ?>

@@ -88,7 +88,15 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
-		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		
+		// Configuração do período de acesso a sala no dia
+		// o sistema se divide em dois turnos por dia e esta variável serve para
+		// configurar a hora início e fim dos mesmos
+		'reservationPeriod'=>array(
+			'start_time_of_shift_one'	=> 8,
+			'end_time_of_shift_one'		=> 12,
+			'start_time_of_shift_two'	=> 14,
+			'end_time_of_shift_two'		=> 19
+		),
 	),
 );

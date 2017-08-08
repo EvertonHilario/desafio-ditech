@@ -1,6 +1,7 @@
  <?php $form=$this->beginWidget('CActiveForm', array(
   'id'=>'user-form',
   'enableAjaxValidation'=>false,
+  'htmlOptions'=>array('class'=>'well')
 )); ?>
 
   <div class="card">
