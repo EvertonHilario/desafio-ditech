@@ -1,7 +1,8 @@
  <?php $form=$this->beginWidget('CActiveForm', array(
-  'id'=>'user-form',
+  'id'=>'reserve-form',
   'enableAjaxValidation'=>false,
-  'htmlOptions'=>array('class'=>'well')
+  'action'=>Yii::app()->createUrl("appointment/create"),
+  'htmlOptions'=>array('class'=>'well'),
 )); ?>
 
   <div class="card">
@@ -16,26 +17,25 @@
           <div class="row">
               <div class="col-md-6">
                 <div class="form-group label-floating">
-                  <label class="control-label">* Descrição da atividade</label>
-                    <?php echo $form->textArea($model,'appointment_activiy_description',array('rows'=>6, 'cols'=>50,'class'=>'form-control')); ?>
+                    <?php echo $form->textArea($model,'appointment_activiy_description',array('rows'=>6, 'cols'=>50,'class'=>'form-control','placeholder'=>'* Descrição da atividade')); ?>
                 </div>
               </div>
               <div class="col-md-6">
               </div>
           </div>
-
-          <?php echo CHtml::submitButton($model->isNewRecord ? 'Cadastrar' : 'Salvar',array('class'=>'btn btn-primary pull-right')); ?>
-
+      <button type="submit" onclick="createReserve();return false;" class="btn btn-primary">
+        Reservar
+      </button>
           <div class="clearfix"></div>
     </div>
   </div>
 
-  <?php echo $form->textField($model,'appointment_start'); ?>
+  <?php echo $form->hiddenField($model,'appointment_start'); ?>
 
-  <?php echo $form->textField($model,'appointment_end'); ?>
+  <?php echo $form->hiddenField($model,'appointment_end',array('value'=>$model->appointment_start)); ?>
 
-  <?php echo $form->textField($model,'user_user_id',array('size'=>11,'maxlength'=>11)); ?>
+  <?php echo $form->hiddenField($model,'user_user_id',array('value'=>Yii::app()->user->user_id)); ?>
 
-  <?php echo $form->textField($model,'room_room_id'); ?>
+  <?php echo $form->hiddenField($model,'room_room_id'); ?>
 
 <?php $this->endWidget(); ?>

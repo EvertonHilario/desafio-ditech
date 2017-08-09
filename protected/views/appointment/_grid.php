@@ -15,7 +15,7 @@
 
 		    	<?php for ($hour = Yii::app()->params['reservationPeriod']['start_time_of_shift_one']; $hour <= Yii::app()->params['reservationPeriod']['end_time_of_shift_one']; $hour++) { ?>
 			        <tr>
-			        	<td><?php echo $hour; ?>:00</td>
+			        	<td><?php echo str_pad($hour, 2, 0, STR_PAD_LEFT); ?>:00</td>
 			        	<td>
 
 			        		<?php $this->renderPartial('grid/actionOrState',array('hour' => $hour)); ?>
@@ -39,7 +39,7 @@
 
 		    	<?php for ($hour = Yii::app()->params['reservationPeriod']['start_time_of_shift_two']; $hour <= Yii::app()->params['reservationPeriod']['end_time_of_shift_two']; $hour++) { ?>
 			        <tr>
-			        	<td><?php echo $hour; ?>:00</td>
+			        	<td><?php echo str_pad($hour, 2, 0, STR_PAD_LEFT); ?>:00</td>
 			        	<td>
 
 			        		<?php $this->renderPartial('grid/actionOrState',array('hour' => $hour)); ?>

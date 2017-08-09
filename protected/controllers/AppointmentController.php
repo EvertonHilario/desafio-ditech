@@ -32,7 +32,7 @@ class AppointmentController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index', 'search','renderReservationPage'),
+				'actions'=>array('index', 'search','renderReservationPage','create'),
 				'users'=>array('@'),
 			),
 			
@@ -223,12 +223,25 @@ class AppointmentController extends Controller
     * @access public 
     * @return html     
     */ 
-	public function actionRenderReservationPage($hour)
+	public function actionRenderReservationPage()
 	{
+
+		try 
+		{
+
+			//método que valida os dados vindo do formulário de busca
+			$this->postValidator($_POST);
 
 			$model=new Appointment;
 
-			$html =	$this->renderPartial(
+			//seta o id da sala
+			$model->room_room_id = $_POST['room_room_id'];
+
+			//seta data hora da reserva
+			$this->prepareAppointmentStartToRenderStandbyScreen($model);
+
+			// monta o html com o formulário de reserva
+			$this->html =	$this->renderPartial(
 				'_formReserve',
 				array(
 					'model' => $model,
@@ -236,7 +249,36 @@ class AppointmentController extends Controller
 				true
 			);
 
-			echo $html;
+			if(empty($this->html)) throw new Exception('Erro ao gravar o html. Recarregue a página!');
+
+			//retorna json com tela de reserva de sala
+		    $this->jsonStructureOfTheClass();
+
+
+		}
+		catch (Exception $e) 
+		{
+			$this->html = '<div class="alert alert-success" role="alert">'.$e->getMessage().'</div>';
+			// imprime json com mensagem do sistema
+		    $this->jsonStructureOfTheClass();
+
+		}
+
+
+	}
+
+	
+
+  	/** 
+    * método que prepara appointment_start para renderizar tela de reserva
+    * @access private 
+    * @return int appointment_start     
+    */ 
+    private function prepareAppointmentStartToRenderStandbyScreen($model)
+	{
+		//concatena a data com a hora enviada via post
+		$model->appointment_start = date('Y-m-d', CDateTimeParser::parse($_POST['appointment_start'], Yii::app()->locale->dateFormat)) . ' ' . str_pad($_POST['hour'], 2, 0, STR_PAD_LEFT);
+
 	}
 
 	/**
@@ -245,18 +287,37 @@ class AppointmentController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Appointment;
 
-		if(isset($_POST['Appointment']))
+		try 
 		{
+
+			if(!isset($_POST['Appointment'])) throw new Exception('Recarregue a página e envie o formulário novamente');
+
+			$model=new Appointment;
+
 			$model->attributes=$_POST['Appointment'];
+
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->appointment_id));
+			{
+				$this->html = '<div class="alert alert-success" role="alert">Sala reservada com sucesso</div>';
+
+			}
+
+			if(empty($this->html)) throw new Exception('Erro ao gravar o html. Recarregue a página!');
+
+			//retorna json com tela de reserva de sala
+		    $this->jsonStructureOfTheClass();
+
+
+		}
+		catch (Exception $e) 
+		{
+			$this->html = '<div class="alert alert-success" role="alert">'.$e->getMessage().'</div>';
+			// imprime json com mensagem do sistema
+		    $this->jsonStructureOfTheClass();
+
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
 	}
 
 	/**

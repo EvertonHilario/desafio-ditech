@@ -1,6 +1,8 @@
 <form action="<?php echo Yii::app()->createUrl('appointment/search'); ?>" id="search-hour" method="post">
     <div class="row">
 
+		<input type="hidden" name="hour" id="hour">
+
     	<div class="col-md-3">
 			<div class="form-group label-floating">
 
@@ -34,6 +36,7 @@
 			<button type="submit" id="btn-search" onclick="sendSearch();return false;" class="btn btn-primary btn-round btn-just-icon">
 				<i class="material-icons">search</i><div class="ripple-container"></div>
 			</button>
+
 		</div>
 
 	</div>
