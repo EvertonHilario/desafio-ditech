@@ -62,30 +62,18 @@ class Appointment extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'appointment_id' => 'Appointment',
-			'appointment_start' => 'Appointment Start',
+			'appointment_id' => 'Ref.',
+			'appointment_start' => 'Data/Hora',
 			'appointment_end' => 'Appointment End',
-			'appointment_activiy_description' => 'Appointment Activiy Description',
-			'user_user_id' => 'User User',
-			'room_room_id' => 'Room Room',
+			'appointment_activiy_description' => 'Descrição da atividade',
+			'user_user_id' => 'Reservado por',
+			'room_room_id' => 'Sala',
 		);
 	}
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
-	public function search()
+
+	public function searchDashboard()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
@@ -95,11 +83,40 @@ class Appointment extends CActiveRecord
 		$criteria->compare('appointment_activiy_description',$this->appointment_activiy_description,true);
 		$criteria->compare('user_user_id',$this->user_user_id,true);
 		$criteria->compare('room_room_id',$this->room_room_id);
+		$criteria->addCondition("t.appointment_start >= NOW()");
+		$criteria->addCondition("t.user_user_id = ".Yii::app()->user->user_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			 'sort' => array(
+                'defaultOrder' => 'appointment_start asc',
+            ),
+            'pagination' => array(
+                'pageSize' => 1000,
+            ),
 		));
 	}
+
+	public  function returnsDataFormatBrazil($dateTime) 
+	{
+		if($dateTime == '0000-00-00 00:00:00')$dateTime = date('Y-m-d H:i:s');
+
+        $dateTime = explode (' ', $dateTime);
+        $dateTime = implode("/",array_reverse(explode("-",$dateTime[0])));
+
+	    return $dateTime;
+	}
+
+	public  function returnsTimeFormatBrazil($dateTime) 
+	{
+		if($dateTime == '0000-00-00 00:00:00')$dateTime = date('Y-m-d H:i:s');
+
+        $dateTime = explode (' ', $dateTime);
+        $dateTime = substr($dateTime[1],0,5);
+
+	    return $dateTime;
+	}
+
 
 	/**
 	 * Returns the static model of the specified AR class.

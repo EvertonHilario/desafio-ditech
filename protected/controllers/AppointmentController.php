@@ -32,7 +32,7 @@ class AppointmentController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index', 'search','renderReservationPage','create'),
+				'actions'=>array('index', 'search','renderReservationPage','create', 'delete'),
 				'users'=>array('@'),
 			),
 			

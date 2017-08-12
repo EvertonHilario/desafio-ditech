@@ -50,7 +50,15 @@ class DashboardController extends Controller
 
 	public function actionIndex()
 	{
-		$this->render('index');
+
+		$model=new Appointment('searchDashboard');
+		$model->unsetAttributes(); 
+		if(isset($_GET['Appointment']))
+			$model->attributes=$_GET['Appointment'];
+
+		$this->render('index',array(
+			'model'=>$model,
+		));
 	}
 
 }

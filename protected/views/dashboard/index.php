@@ -95,7 +95,13 @@
 				</a>
 			</div>
 
-		</div>	
+		</div>
+
+		<!-- start grade com as reservas do usuário logado -->
+		<?php $this->renderPartial('_gridMyAppointment',array('model'=>$model)); ?>
+		<!-- end grade com as reservas do usuário logado -->
+
+
 
 	</div>
 </div>
